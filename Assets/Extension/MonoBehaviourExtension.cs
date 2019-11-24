@@ -7,13 +7,8 @@ public static class MonoBehaviourExtension  {
 	public static Coroutine Tween (this MonoBehaviour self, float start, float end, float duration,Action<float> action) {
 		return self.StartCoroutine (_Tween (start, end, duration, action));
 	}
-
-
-	//public static Coroutine Tween (this MonoBehaviour self, float start, float end, float duration,Action<float> action , Action onCompleteDelegate ) {
-	//	return self.StartCoroutine (_Tween (start, end, duration, action, onCompleteDelegate));
-	//}
 		
-	static IEnumerator _Tween ( float s, float e,float d, Action<float> a){//,Action onCompleteDelegate = null) {
+	static IEnumerator _Tween ( float s, float e,float d, Action<float> a){
 		if (a == null) yield break;
 		float time = 0f;
 		float t = 0f;
@@ -27,7 +22,6 @@ public static class MonoBehaviourExtension  {
 		} while (time < d);
 
 		a (e);
-		//if (onCompleteDelegate != null) onCompleteDelegate (); 
 	}
 
 

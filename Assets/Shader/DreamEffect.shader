@@ -34,18 +34,29 @@
 			{
 				float2 pivot=float2(0.5,0.5);
                 float2 uv=float2(0,0);
-				fixed4 fragColor;
-				float force = (1-_Progress)/2;
-				fragColor = tex2D(_MainTex, i.uv);
+
+				float force = (1.0f-_Progress)*2; //prepare passed tween value
+				fixed4 fragColor = tex2D(_MainTex, i.uv);
 				
 				if(force>0)
 				{
-					//iterate over blur samples
+					//spiral 
+					// center
+					float2 p = i.uv - pivot.xy;
+					// distance to center
+					float r = 1-sqrt(dot(p,p)); //1-
+					// rotate
+					uv += rotate(r*pow(1.1,force*100), p);
+					// move back and make sure its inside the screen
+					uv = clamp(uv + pivot.xy, float2(0,0), float2(1,1));
+					//
+					fragColor = tex2D(_MainTex, uv);
+					//blur
 					for(float index=0;index<10;index++){
 						//get uv coordinate of sample
-						float2 uv = i.uv + float2(0, (index/9 - 0.5) * 0.1);
+						float2 buv = uv + float2(0, (index/9 - 0.5) * 0.1);
 						//add color at position to color
-						fragColor += tex2D(_MainTex, uv)*force;
+						fragColor += tex2D(_MainTex, buv)*force;
 					}
 				}
 				return fragColor;
