@@ -32,20 +32,6 @@
 
 			fixed4 frag (v2f_img i) : SV_Target
 			{
-				/*
-				// get the source color of screen
-				fixed4 col = tex2D(_MainTex, i.uv);
-				// center pixel
-				half2 center = _MainTex_TexelSize.zw / 2;
-				half2 pixelPos = i.uv * _MainTex_TexelSize.zw;
-				// distance to the center by pixel
-				half dist = distance(center, pixelPos);
-				// get the radius by pixels
-				half radius = _Progress * _MainTex_TexelSize.z;
-
-				float f = clamp(radius - dist, 0, 1);
-				return col * f;
-				*/
 				float2 pivot=float2(0.5,0.5);
                 float2 uv=float2(0,0);
 				fixed4 fragColor;
@@ -62,25 +48,6 @@
 						fragColor += tex2D(_MainTex, uv)*force;
 					}
 				}
-				/**/
-				/*
-				if(_Progress){
-					//spiral effect
-					// center
-					float2 p = i.uv - pivot.xy;
-					// distance to center
-					float r = 1-sqrt(dot(p,p)); //1-
-					// rotate
-					uv += rotate(r*(1-_Progress), p);
-					// move back and make sure its inside the screen
-					uv = clamp(uv + pivot.xy, float2(0,0), float2(1,1));
-					//
-					fragColor = tex2D(_MainTex, uv);
-				}
-				else{
-					fragColor = tex2D(_MainTex, i.uv);
-				}
-				*/
 				return fragColor;
 			}
 			ENDCG
